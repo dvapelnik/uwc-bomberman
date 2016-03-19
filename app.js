@@ -57,8 +57,4 @@ app.use(function (err, req, res, next) {
     });
 });
 
-var Game = require('./lib/Bomberman/Game');
-game = new Game();
-game.makePlace();
-
 module.exports = app;

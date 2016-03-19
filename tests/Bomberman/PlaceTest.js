@@ -1,10 +1,12 @@
-var expect = require('chai').expect;
-var Place = require('../../lib/Bomberman/Place');
-var Block = require('../../lib/Bomberman/Block/Block');
-var BlockFireProof = require('../../lib/Bomberman/Block/BlockFireProof');
+var expect = require('chai').expect
+    , Place = require('../../lib/Bomberman/Place')
+    , Player = require('../../lib/Bomberman/Player')
+    , Block = require('../../lib/Bomberman/Block/Block')
+    , BlockFireProof = require('../../lib/Bomberman/Block/BlockFireProof')
+    ;
 
-describe('Serialize with parse', function () {
-    it('should be correct', function () {
+describe('Place', function () {
+    it('should serialize and deserialize in pair works correct', function () {
         var place = new Place();
 
         place.buildPlace();
@@ -15,9 +17,7 @@ describe('Serialize with parse', function () {
 
         expect(stringified).to.equal(stringifiedAgain);
     });
-});
 
-describe('Place', function () {
     it('should have 12 free cells', function () {
         var place = new Place();
         place.buildPlace(10);
@@ -54,5 +54,20 @@ describe('Place', function () {
 
         expect(isFireProof).to.be.true;
         expect(isNotFireProof).to.be.true;
-    })
+    });
+
+    it('should sets into player object after adding it', function () {
+        var
+            place = new Place()
+            , player = new Player()
+            ;
+
+        expect(player.place).to.be.undefined;
+        expect(place.players).to.be.empty;
+
+        place.addPlayer(player);
+
+        expect(place.players.length).to.equal(1);
+        expect(player.place).to.equal(place);
+    });
 });
