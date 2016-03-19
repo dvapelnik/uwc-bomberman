@@ -10,9 +10,10 @@ describe('Place', function () {
         var place = new Place();
 
         place.buildPlace();
+        place.setPlayers(makePlayers(4));
 
         var stringified = place.serialize();
-        var parsed = place.parse(stringified);
+        place.parse(stringified);
         var stringifiedAgain = place.serialize();
 
         expect(stringified).to.equal(stringifiedAgain);
@@ -47,7 +48,8 @@ describe('Place', function () {
                 if (rowIdx % 2 == 1 && cellIdx % 2 == 1) {
                     isFireProof = isFireProof && cell instanceof BlockFireProof;
                 } else {
-                    isNotFireProof = isNotFireProof && (cell instanceof Block || cell === null);
+                    isNotFireProof = isNotFireProof &&
+                        (cell instanceof Block || cell instanceof Player || cell === null);
                 }
             })
         });
@@ -56,18 +58,57 @@ describe('Place', function () {
         expect(isNotFireProof).to.be.true;
     });
 
-    it('should sets into player object after adding it', function () {
+    it('should fail to set players into unfilled place', function () {
         var
             place = new Place()
-            , player = new Player()
+            , players = makePlayers(4)
             ;
 
-        expect(player.place).to.be.undefined;
-        expect(place.players).to.be.empty;
+        expect(function () {
+            place.setPlayers(players);
+        }).to.throw('Build places first');
+    });
 
-        place.addPlayer(player);
+    it('should fail on set players when it\'s count is not four', function () {
+        var
+            place = new Place()
+            , players = makePlayers(3)
+            ;
 
-        expect(place.players.length).to.equal(1);
-        expect(player.place).to.equal(place);
+        place.buildPlace();
+
+        expect(function () {
+            place.setPlayers(players);
+        }).to.throw('Place needs four players');
+    });
+
+    it('sets Players at angles', function () {
+        var
+            place = new Place()
+            , players = makePlayers(4)
+            ;
+
+        place.buildPlace();
+        place.setPlayers(players);
+
+        var
+            countOfRows = place.place.length
+            , countOfCells = place.place[0].length
+            ;
+
+        expect(place.place[0][0] instanceof Player).to.be.true;
+        expect(place.place[0][countOfCells - 1] instanceof Player).to.be.true;
+        expect(place.place[countOfRows - 1][0] instanceof Player).to.be.true;
+        expect(place.place[countOfRows - 1][countOfCells - 1] instanceof Player).to.be.true;
     });
 });
+
+function makePlayers(count) {
+    var players = [];
+
+    for (var i = 0; i < count; i++) {
+        players.push(new Player());
+    }
+
+    return players;
+}
