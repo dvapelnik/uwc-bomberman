@@ -1,0 +1,51 @@
+div.b-place-container {
+    position: relative;
+}
+
+div.b-place {
+    display: table;
+    border: 2px solid #ddffdd;
+}
+
+div.b-row {
+    display: table-row;
+}
+
+div.b-cell {
+    box-sizing: border-box;
+    display: table-cell;
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+    text-align: center;
+    border: 2px solid #ddffdd;
+}
+
+div.b-items {
+    border: 2px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+div.b-item {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+div.b-item.b-player {
+    background-color: #0b97c4;
+}
+
+div.b-item.bomb {
+    background-color: orangered;
+}
+
+div.b-item.b-block {
+    background-color: #990000;
+}
+
+div.b-item.b-block-flame-proof {
+    background-color: black;
+}

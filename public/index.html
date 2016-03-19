@@ -5,21 +5,18 @@
     <title>Title</title>
 
     <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="stylesheets/bman.css">
 </head>
 <body>
-<h1>My body is a cage</h1>
+<div id="react-app"></div>
 </body>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="javascripts/react.js"></script>
+<script src="javascripts/react-dom.js"></script>
+<script src="javascripts/browser.min.js"></script>
+<script src="javascripts/reflux.min.js"></script>
 
-<script>
-    var socket = io.connect('http://localhost:3000/game');
-
-    socket.on('start', function (msg) {
-        console.log(msg);
-
-        socket.emit('received', {status: 'ok'});
-    });
-</script>
+<script type="text/babel" src="javascripts/react-app.js"></script>
 
 </html>
