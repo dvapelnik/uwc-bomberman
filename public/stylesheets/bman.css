@@ -35,7 +35,9 @@ div.b-item {
 }
 
 div.b-item.b-player {
-    background-color: #0b97c4;
+    border: 2px solid darkblue;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
 
 div.b-item.bomb {

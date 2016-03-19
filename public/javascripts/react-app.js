@@ -73,7 +73,11 @@ var Place = React.createClass({
 
                     var classNames = ['b-item'];
 
-                    if (cell == 'P') classNames.push('b-player');
+                    if (cell == 'P') {
+                        classNames.push('b-player');
+                        style['background-color'] = getRandomColor();
+                    }
+
                     if (cell == '0') classNames.push('b-block');
                     if (cell == '1') classNames.push('b-block-flame-proof');
 
@@ -102,3 +106,12 @@ ReactDOM.render(
     <Place/>,
     document.getElementById('react-app')
 );
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
