@@ -9,4 +9,17 @@
 <body>
 <h1>My body is a cage</h1>
 </body>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    var socket = io.connect('http://localhost:3000/game');
+
+    socket.on('start', function (msg) {
+        console.log(msg);
+
+        socket.emit('received', {status: 'ok'});
+    });
+</script>
+
 </html>
