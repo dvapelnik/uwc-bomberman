@@ -9,6 +9,9 @@ var routes = require('./routes/index');
 
 var app = express();
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -54,5 +57,8 @@ app.use(function (err, req, res, next) {
     });
 });
 
+var Game = require('./lib/Bomberman/Game');
+game = new Game();
+game.makePlace();
 
 module.exports = app;
