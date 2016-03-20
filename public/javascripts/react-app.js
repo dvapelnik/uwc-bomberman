@@ -17,6 +17,8 @@ var gameStore = Reflux.createStore({
     onStart: function (msg) {
         this.place = JSON.parse(msg.game.place);
 
+        console.log(this.place);
+
         this.trigger(this.place);
     },
     onWindowKeyDown: function (e) {
@@ -81,6 +83,7 @@ var Place = React.createClass({
     getInitialState: function () {
         return {
             blocks: [],
+            blocksFireProof: [],
             players: [],
             bombs: []
         }
@@ -88,6 +91,7 @@ var Place = React.createClass({
     onPlaceChange: function (place) {
         this.setState({
             blocks: place.blocks,
+            blocksFireProof: place.blocksFireProof,
             players: place.players,
             bombs: place.bombs
         });
@@ -95,7 +99,7 @@ var Place = React.createClass({
     render: function () {
         var items = [];
 
-        [this.state.blocks, this.state.players, this.state.bombs].map(function (layer, ti) {
+        [this.state.blocks, this.state.blocksFireProof, this.state.players, this.state.bombs].map(function (layer, ti) {
             layer.map(function (row, ri) {
                 row
                     .map(function (cell, ci) {
