@@ -96,10 +96,19 @@ describe('Place', function () {
             , countOfCells = place.place[0].length
             ;
 
-        expect(place.place[0][0] instanceof Player).to.be.true;
-        expect(place.place[0][countOfCells - 1] instanceof Player).to.be.true;
-        expect(place.place[countOfRows - 1][0] instanceof Player).to.be.true;
-        expect(place.place[countOfRows - 1][countOfCells - 1] instanceof Player).to.be.true;
+        [
+            [0, 0],
+            [countOfCells - 1, 0],
+            [0, countOfRows - 1],
+            [countOfCells - 1, countOfRows - 1]
+        ].map(function (p) {
+            expect(place.place[p[1]][p[0]]).to.be.instanceof(Player);
+            expect(place.place[p[1]][p[0]].location).to.be.not.undefined;
+            expect(place.place[p[1]][p[0]].location.x).to.be.not.undefined;
+            expect(place.place[p[1]][p[0]].location.x).to.be.equal(p[0]);
+            expect(place.place[p[1]][p[0]].location.y).to.be.not.undefined;
+            expect(place.place[p[1]][p[0]].location.y).to.be.equal(p[1]);
+        });
     });
 });
 
