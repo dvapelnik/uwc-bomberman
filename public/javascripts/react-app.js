@@ -1,4 +1,4 @@
-var GameActions = Reflux.createActions(['start', 'placeBomb', 'move']);
+var GameActions = Reflux.createActions(['start', 'bombPlace', 'bombBoom', 'move']);
 var WindowActions = Reflux.createActions(['keyDown']);
 
 var socket = io.connect(location.origin + '/game');
@@ -10,11 +10,12 @@ var gameStore = Reflux.createStore({
 
         this.listenTo(GameActions.start, this.onStart);
         this.listenTo(GameActions.move, this.onMove);
-        this.listenTo(GameActions.placeBomb, this.onPlaceBomb);
+        this.listenTo(GameActions.bombPlace, this.onPlaceBomb);
+        this.listenTo(GameActions.bombBoom, this.onBombBoom);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
-    onStart: function (msg) {
-        this.place = JSON.parse(msg.game.place);
+    onStart: function (placeInfo) {
+        this.place = JSON.parse(placeInfo.game.place);
 
         this.trigger(this.place);
     },
@@ -24,7 +25,7 @@ var gameStore = Reflux.createStore({
         switch (e.keyCode) {
             // 32 - space
             case 32:
-                actionName = 'place.bomb';
+                actionName = 'bomb.place';
                 break;
             // 37 - left
             case 37:
@@ -47,8 +48,20 @@ var gameStore = Reflux.createStore({
 
         this.socket.emit(actionName);
     },
-    onPlaceBomb: function (can) {
-        console.log(can);
+    onPlaceBomb: function (bombInfo) {
+        if (bombInfo.status == 'OK') {
+            this.place.bombs[bombInfo.location.y][bombInfo.location.x] = {
+                type: 'bomb'
+            };
+
+            this.trigger(this.place);
+        }
+
+    },
+    onBombBoom: function (placeInfo) {
+        this.place = JSON.parse(placeInfo.place);
+
+        this.trigger(this.place);
     },
     onMove: function (move) {
         var
@@ -69,6 +82,7 @@ var Place = React.createClass({
     getInitialState: function () {
         return {
             blocks: [],
+            blocksFireProof: [],
             players: [],
             bombs: []
         }
@@ -76,6 +90,7 @@ var Place = React.createClass({
     onPlaceChange: function (place) {
         this.setState({
             blocks: place.blocks,
+            blocksFireProof: place.blocksFireProof,
             players: place.players,
             bombs: place.bombs
         });
@@ -83,7 +98,7 @@ var Place = React.createClass({
     render: function () {
         var items = [];
 
-        [this.state.blocks, this.state.players, this.state.bombs].map(function (layer, ti) {
+        [this.state.blocks, this.state.blocksFireProof, this.state.players, this.state.bombs].map(function (layer, ti) {
             layer.map(function (row, ri) {
                 row
                     .map(function (cell, ci) {
@@ -138,65 +153,13 @@ var Place = React.createClass({
             items = <h1>Wait...</h1>;
         }
 
-        //if (this.state.place.length) {
-        //    place = this.state.place.map(function (row, ri) {
-        //        return (
-        //            <div key={ri} className="b-row">
-        //                {row.map(function (cell, ci) {
-        //                    return (
-        //                        <div key={ri * 100 + ci} className="b-cell"></div>
-        //                    );
-        //                })}
-        //            </div>
-        //        );
-        //    });
-        //
-        //    items = this.state.place.map(function (row, ri) {
-        //        return row.map(function (cell, ci) {
-        //            var style = {
-        //                left: ci * 50 + 'px',
-        //                top: ri * 50 + 'px'
-        //            };
-        //
-        //            var classNames = ['b-item'];
-        //
-        //            if (cell.match(/^P/)) {
-        //                classNames.push('b-player');
-        //
-        //                if (cell == 'PA') {
-        //                    classNames.push('b-player-active');
-        //                }
-        //            }
-        //
-        //            if (cell == '0') classNames.push('b-block');
-        //            if (cell == '1') classNames.push('b-block-flame-proof');
-        //
-        //            return (
-        //                <div
-        //                    key={ri * 100 + ci}
-        //                    className={classNames.join(' ')}
-        //                    style={style}>
-        //                </div>
-        //            );
-        //        });
-        //    });
-        //
-        //    place = (
-        //        <div className="b-place-container">
-        //            <div className="b-place">{place}</div>
-        //            <div className="b-items">{items}</div>
-        //        </div>
-        //    );
-        //} else {
-        //    place = <h1>Wait...</h1>;
-        //}
-
         return items;
     }
 });
 
 socket.on('start', GameActions.start);
-socket.on('place.bomb', GameActions.placeBomb);
+socket.on('bomb.place', GameActions.bombPlace);
+socket.on('bomb.boom', GameActions.bombBoom);
 socket.on('move', GameActions.move);
 document.addEventListener('keydown', WindowActions.keyDown);
 

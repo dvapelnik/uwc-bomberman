@@ -9,6 +9,12 @@ div.b-item {
     position: absolute;
     height: 50px;
     width: 50px;
+
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 15px;
+    box-sizing: border-box;
 }
 
 div.b-item-block {
@@ -17,6 +23,13 @@ div.b-item-block {
 
 div.b-item-block.b-item-block-fire-proof {
     background-color: black;
+}
+
+div.b-item.b-item-bomb {
+    background-color: orangered;
+    border-radius: 50%;
+    border: 10px solid black;
+    box-sizing: border-box;
 }
 
 div.b-item.b-item-player {
