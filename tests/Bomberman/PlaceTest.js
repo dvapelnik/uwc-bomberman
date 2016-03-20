@@ -25,7 +25,7 @@ describe('Place', function () {
 
         var freeSpacesCounter = 0;
 
-        place.getArray().map(function (row) {
+        place.blocks.map(function (row) {
             row.map(function (cell) {
                 if (cell === null) {
                     freeSpacesCounter++;
@@ -43,7 +43,7 @@ describe('Place', function () {
         var isFireProof = true;
         var isNotFireProof = true;
 
-        place.getArray().map(function (row, rowIdx) {
+        place.blocks.map(function (row, rowIdx) {
             row.map(function (cell, cellIdx) {
                 if (rowIdx % 2 == 1 && cellIdx % 2 == 1) {
                     isFireProof = isFireProof && cell instanceof BlockFireProof;
@@ -56,17 +56,6 @@ describe('Place', function () {
 
         expect(isFireProof).to.be.true;
         expect(isNotFireProof).to.be.true;
-    });
-
-    it('should fail to set players into unfilled place', function () {
-        var
-            place = new Place()
-            , players = makePlayers(4)
-            ;
-
-        expect(function () {
-            place.setPlayers(players);
-        }).to.throw('Build places first');
     });
 
     it('should fail on set players when it\'s count is not four', function () {
@@ -91,23 +80,18 @@ describe('Place', function () {
         place.buildPlace();
         place.setPlayers(players);
 
-        var
-            countOfRows = place.place.length
-            , countOfCells = place.place[0].length
-            ;
-
         [
             [0, 0],
-            [countOfCells - 1, 0],
-            [0, countOfRows - 1],
-            [countOfCells - 1, countOfRows - 1]
+            [place.sizes.x - 1, 0],
+            [0, place.sizes.y - 1],
+            [place.sizes.x - 1, place.sizes.y - 1]
         ].map(function (p) {
-            expect(place.place[p[1]][p[0]]).to.be.instanceof(Player);
-            expect(place.place[p[1]][p[0]].location).to.be.not.undefined;
-            expect(place.place[p[1]][p[0]].location.x).to.be.not.undefined;
-            expect(place.place[p[1]][p[0]].location.x).to.be.equal(p[0]);
-            expect(place.place[p[1]][p[0]].location.y).to.be.not.undefined;
-            expect(place.place[p[1]][p[0]].location.y).to.be.equal(p[1]);
+            expect(place.players[p[1]][p[0]]).to.be.instanceof(Player);
+            expect(place.players[p[1]][p[0]].location).to.be.not.undefined;
+            expect(place.players[p[1]][p[0]].location.x).to.be.not.undefined;
+            expect(place.players[p[1]][p[0]].location.x).to.be.equal(p[0]);
+            expect(place.players[p[1]][p[0]].location.y).to.be.not.undefined;
+            expect(place.players[p[1]][p[0]].location.y).to.be.equal(p[1]);
         });
     });
 });

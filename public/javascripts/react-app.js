@@ -10,6 +10,7 @@ var gameStore = Reflux.createStore({
 
         this.listenTo(GameActions.start, this.onStart);
         this.listenTo(GameActions.move, this.onMove);
+        this.listenTo(GameActions.placeBomb, this.onPlaceBomb);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
     onStart: function (msg) {
@@ -19,6 +20,7 @@ var gameStore = Reflux.createStore({
     },
     onWindowKeyDown: function (e) {
         var actionName;
+
         switch (e.keyCode) {
             // 32 - space
             case 32:
@@ -54,9 +56,9 @@ var gameStore = Reflux.createStore({
             , newLocation = move.current
             ;
 
-        var _tmp = this.place[oldLocation.y][oldLocation.x];
-        this.place[oldLocation.y][oldLocation.x] = this.place[newLocation.y][newLocation.x];
-        this.place[newLocation.y][newLocation.x] = _tmp;
+        var _tmp = this.place.players[oldLocation.y][oldLocation.x];
+        this.place.players[oldLocation.y][oldLocation.x] = this.place.players[newLocation.y][newLocation.x];
+        this.place.players[newLocation.y][newLocation.x] = _tmp;
 
         this.trigger(this.place);
     }
@@ -66,71 +68,130 @@ var Place = React.createClass({
     mixins: [Reflux.listenTo(gameStore, "onPlaceChange")],
     getInitialState: function () {
         return {
-            place: []
+            blocks: [],
+            players: [],
+            bombs: []
         }
     },
     onPlaceChange: function (place) {
         this.setState({
-            place: place
+            blocks: place.blocks,
+            players: place.players,
+            bombs: place.bombs
         });
     },
     render: function () {
-        var place, items;
+        var items = [];
 
-        if (this.state.place.length) {
-            place = this.state.place.map(function (row, ri) {
-                return (
-                    <div key={ri} className="b-row">
-                        {row.map(function (cell, ci) {
-                            return (
-                                <div key={ri * 100 + ci} className="b-cell"></div>
-                            );
-                        })}
-                    </div>
-                );
-            });
+        [this.state.blocks, this.state.players, this.state.bombs].map(function (layer, ti) {
+            layer.map(function (row, ri) {
+                row
+                    .map(function (cell, ci) {
+                        var style = {
+                            left: ci * 50 + 'px',
+                            top: ri * 50 + 'px'
+                        };
 
-            items = this.state.place.map(function (row, ri) {
-                return row.map(function (cell, ci) {
-                    var style = {
-                        left: ci * 50 + 'px',
-                        top: ri * 50 + 'px'
-                    };
+                        var classNames = ['b-item'];
 
-                    var classNames = ['b-item'];
+                        if (cell.type == 'block') {
+                            classNames.push('b-item-block');
 
-                    if (cell.match(/^P/)) {
-                        classNames.push('b-player');
-
-                        if (cell == 'PA') {
-                            classNames.push('b-player-active');
+                            if (cell.isFireProof) {
+                                classNames.push('b-item-block-fire-proof');
+                            }
                         }
-                    }
 
-                    if (cell == '0') classNames.push('b-block');
-                    if (cell == '1') classNames.push('b-block-flame-proof');
+                        if (cell.type == 'player') {
+                            classNames.push('b-item-player');
 
-                    return (
-                        <div
-                            key={ri * 100 + ci}
-                            className={classNames.join(' ')}
-                            style={style}>
-                        </div>
-                    );
-                });
-            });
+                            style.backgroundColor = cell.color;
 
-            place = (
-                <div className="b-place-container">
-                    <div className="b-place">{place}</div>
-                    <div className="b-items">{items}</div>
+                            if (cell.isActive) {
+                                classNames.push('b-item-player-current');
+                            }
+                        }
+
+                        if (cell.type == 'bomb') {
+                            classNames.push('b-item-bomb');
+                        }
+
+                        items.push(cell.type == 'empty' ? null : (
+                            <div
+                                key={ti * 10000 + ri * 100 + ci}
+                                style={style}
+                                className={classNames.join(' ')}></div>
+                        ));
+                    });
+            })
+        });
+
+        if (items.length) {
+            items = (
+                <div className="b-place">
+                    {items.filter(function (item) {
+                        return item !== null;
+                    })}
                 </div>
             );
         } else {
-            place = <h1>Wait...</h1>;
+            items = <h1>Wait...</h1>;
         }
 
-        return place;
+        //if (this.state.place.length) {
+        //    place = this.state.place.map(function (row, ri) {
+        //        return (
+        //            <div key={ri} className="b-row">
+        //                {row.map(function (cell, ci) {
+        //                    return (
+        //                        <div key={ri * 100 + ci} className="b-cell"></div>
+        //                    );
+        //                })}
+        //            </div>
+        //        );
+        //    });
+        //
+        //    items = this.state.place.map(function (row, ri) {
+        //        return row.map(function (cell, ci) {
+        //            var style = {
+        //                left: ci * 50 + 'px',
+        //                top: ri * 50 + 'px'
+        //            };
+        //
+        //            var classNames = ['b-item'];
+        //
+        //            if (cell.match(/^P/)) {
+        //                classNames.push('b-player');
+        //
+        //                if (cell == 'PA') {
+        //                    classNames.push('b-player-active');
+        //                }
+        //            }
+        //
+        //            if (cell == '0') classNames.push('b-block');
+        //            if (cell == '1') classNames.push('b-block-flame-proof');
+        //
+        //            return (
+        //                <div
+        //                    key={ri * 100 + ci}
+        //                    className={classNames.join(' ')}
+        //                    style={style}>
+        //                </div>
+        //            );
+        //        });
+        //    });
+        //
+        //    place = (
+        //        <div className="b-place-container">
+        //            <div className="b-place">{place}</div>
+        //            <div className="b-items">{items}</div>
+        //        </div>
+        //    );
+        //} else {
+        //    place = <h1>Wait...</h1>;
+        //}
+
+        return items;
     }
 });
 
