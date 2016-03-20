@@ -41,6 +41,7 @@ div.b-item.b-player {
 }
 
 div.b-item.b-player.b-player-active {
+    border-radius: 0;
 }
 
 div.b-item.bomb {
