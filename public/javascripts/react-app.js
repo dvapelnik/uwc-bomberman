@@ -14,10 +14,8 @@ var gameStore = Reflux.createStore({
         this.listenTo(GameActions.bombBoom, this.onBombBoom);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
-    onStart: function (msg) {
-        this.place = JSON.parse(msg.game.place);
-
-        console.log(this.place);
+    onStart: function (placeInfo) {
+        this.place = JSON.parse(placeInfo.game.place);
 
         this.trigger(this.place);
     },
@@ -60,8 +58,9 @@ var gameStore = Reflux.createStore({
         }
 
     },
-    onBombBoom: function (bombInfo) {
-        this.place.bombs[bombInfo.location.y][bombInfo.location.x] = {type: 'empty'};
+    onBombBoom: function (placeInfo) {
+        this.place = JSON.parse(placeInfo.place);
+
         this.trigger(this.place);
     },
     onMove: function (move) {

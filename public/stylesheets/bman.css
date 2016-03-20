@@ -9,6 +9,12 @@ div.b-item {
     position: absolute;
     height: 50px;
     width: 50px;
+
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 15px;
+    box-sizing: border-box;
 }
 
 div.b-item-block {
