@@ -7,27 +7,31 @@ var
 
 describe('Player', function () {
     [
-        {direction: 'right', prev: [0, 0], next: [1, 0], shouldMove: true},
-        {direction: 'right', prev: [1, 0], next: [1, 0], shouldMove: false},
-        {direction: 'down', prev: [0, 0], next: [0, 1], shouldMove: true},
+        {direction: 'right', prev: [0, 0], next: [1, 0], shouldMove: true},     // to empty
+        {direction: 'right', prev: [1, 0], next: [1, 0], shouldMove: false},    // to Block
+        {direction: 'down', prev: [0, 0], next: [0, 1], shouldMove: true},      // to BlockFireProof
+        {direction: 'down', prev: [1, 0], next: [1, 0], shouldMove: false},
         {direction: 'left', prev: [0, 0], next: [-1, 0], shouldMove: false},
         {direction: 'up', prev: [0, 0], next: [0, -11], shouldMove: false},
 
-        {direction: 'down', prev: [12, 0], next: [12, 1], shouldMove: true},
-        {direction: 'down', prev: [12, 1], next: [12, 1], shouldMove: false},
-        {direction: 'left', prev: [12, 0], next: [11, 0], shouldMove: true},
+        {direction: 'down', prev: [12, 0], next: [12, 1], shouldMove: true},    // to empty
+        {direction: 'down', prev: [12, 1], next: [12, 1], shouldMove: false},   // to Block
+        {direction: 'left', prev: [12, 0], next: [11, 0], shouldMove: true},    // to BlockFireProof
+        {direction: 'left', prev: [12, 1], next: [12, 1], shouldMove: false},
         {direction: 'up', prev: [12, 0], next: [12, -1], shouldMove: false},
         {direction: 'right', prev: [12, 0], next: [13, 0], shouldMove: false},
 
-        {direction: 'right', prev: [0, 10], next: [1, 10], shouldMove: true},
-        {direction: 'right', prev: [1, 10], next: [1, 10], shouldMove: false},
-        {direction: 'up', prev: [0, 10], next: [0, 9], shouldMove: true},
+        {direction: 'right', prev: [0, 10], next: [1, 10], shouldMove: true},    // to empty
+        {direction: 'right', prev: [1, 10], next: [1, 10], shouldMove: false},   // to Block
+        {direction: 'up', prev: [0, 10], next: [0, 9], shouldMove: true},        // to BlockFireProof
+        {direction: 'up', prev: [1, 10], next: [1, 10], shouldMove: false},
         {direction: 'left', prev: [0, 10], next: [-1, 10], shouldMove: false},
         {direction: 'down', prev: [0, 10], next: [0, 11], shouldMove: false},
 
-        {direction: 'up', prev: [12, 10], next: [12, 9], shouldMove: true},
-        {direction: 'up', prev: [12, 9], next: [12, 9], shouldMove: false},
-        {direction: 'left', prev: [12, 10], next: [11, 10], shouldMove: true},
+        {direction: 'up', prev: [12, 10], next: [12, 9], shouldMove: true},       // to empty
+        {direction: 'up', prev: [12, 9], next: [12, 9], shouldMove: false},       // to Block
+        {direction: 'left', prev: [12, 10], next: [11, 10], shouldMove: true},    // to BlockFireProof
+        {direction: 'left', prev: [12, 9], next: [12, 9], shouldMove: false},
         {direction: 'down', prev: [12, 10], next: [12, 11], shouldMove: false},
         {direction: 'right', prev: [12, 10], next: [13, 10], shouldMove: false}
     ].map(function (option) {
