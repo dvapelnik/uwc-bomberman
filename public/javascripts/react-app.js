@@ -1,4 +1,4 @@
-var GameActions = Reflux.createActions(['start', 'placeBomb', 'moveLeft', 'moveUp', 'moveRight', 'moveDown']);
+var GameActions = Reflux.createActions(['start', 'placeBomb', 'move']);
 var WindowActions = Reflux.createActions(['keyDown']);
 
 var socket = io.connect('http://localhost:3000/game');
@@ -9,10 +9,7 @@ var gameStore = Reflux.createStore({
         this.place = [];
 
         this.listenTo(GameActions.start, this.onStart);
-        this.listenTo(GameActions.moveLeft, this.onCanMoveLeft);
-        this.listenTo(GameActions.moveUp, this.onCanMoveUp);
-        this.listenTo(GameActions.moveRight, this.onCanMoveRight);
-        this.listenTo(GameActions.moveDown, this.onCanMoveDown);
+        this.listenTo(GameActions.move, this.onMove);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
     onStart: function (msg) {
@@ -25,43 +22,43 @@ var gameStore = Reflux.createStore({
         switch (e.keyCode) {
             // 32 - space
             case 32:
-                actionName = 'can.bomb';
+                actionName = 'place.bomb';
                 break;
             // 37 - left
             case 37:
-                actionName = 'can.move.left';
+                actionName = 'move.left';
                 break;
             // 38 - up
             case 38:
-                actionName = 'can.move.up';
+                actionName = 'move.up';
                 break;
             // 39 - right
             case 39:
-                actionName = 'can.move.right';
+                actionName = 'move.right';
                 break;
             // 40 - down
             case 40:
-                actionName = 'can.move.down';
+                actionName = 'move.down';
                 break;
             default:
         }
 
         this.socket.emit(actionName);
     },
-    onCanPlaceBomb: function (can) {
+    onPlaceBomb: function (can) {
         console.log(can);
     },
-    onCanMoveLeft: function (can) {
-        console.log(can);
-    },
-    onCanMoveUp: function (can) {
-        console.log(can);
-    },
-    onCanMoveRight: function (can) {
-        console.log(can);
-    },
-    onCanMoveDown: function (can) {
-        console.log(can);
+    onMove: function (move) {
+        var
+            oldLocation = move.old
+            , newLocation = move.current
+            ;
+
+        var _tmp = this.place[oldLocation.y][oldLocation.x];
+        this.place[oldLocation.y][oldLocation.x] = this.place[newLocation.y][newLocation.x];
+        this.place[newLocation.y][newLocation.x] = _tmp;
+
+        this.trigger(this.place);
     }
 });
 
@@ -104,7 +101,6 @@ var Place = React.createClass({
 
                     if (cell.match(/^P/)) {
                         classNames.push('b-player');
-                        style.backgroundColor = getRandomColor();
 
                         if (cell == 'PA') {
                             classNames.push('b-player-active');
@@ -139,10 +135,8 @@ var Place = React.createClass({
 });
 
 socket.on('start', GameActions.start);
-socket.on('can.move.left', GameActions.moveLeft);
-socket.on('can.move.up', GameActions.moveUp);
-socket.on('can.move.right', GameActions.moveRight);
-socket.on('can.move.down', GameActions.moveDown);
+socket.on('place.bomb', GameActions.placeBomb);
+socket.on('move', GameActions.move);
 document.addEventListener('keydown', WindowActions.keyDown);
 
 ReactDOM.render(

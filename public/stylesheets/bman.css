@@ -38,6 +38,7 @@ div.b-item.b-player {
     border: 2px solid darkblue;
     border-radius: 50%;
     box-sizing: border-box;
+    background-color: #ffc520;
 }
 
 div.b-item.b-player.b-player-active {
