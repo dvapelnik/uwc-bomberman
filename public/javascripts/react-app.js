@@ -1,7 +1,7 @@
 var GameActions = Reflux.createActions(['start', 'placeBomb', 'move']);
 var WindowActions = Reflux.createActions(['keyDown']);
 
-var socket = io.connect('http://localhost:3000/game');
+var socket = io.connect('//localhost:3000/game');
 
 var gameStore = Reflux.createStore({
     init: function () {
