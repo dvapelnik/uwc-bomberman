@@ -10,6 +10,7 @@ var gameStore = Reflux.createStore({
 
         this.listenTo(GameActions.start, this.onStart);
         this.listenTo(GameActions.move, this.onMove);
+        this.listenTo(GameActions.placeBomb, this.onPlaceBomb);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
     onStart: function (msg) {
