@@ -20,22 +20,6 @@ socket.on('start', GameActions.start);
 
 //#################
 
-var Cell = React.createClass({
-    render: function () {
-        return (
-            <div className="b-cell">x</div>
-        );
-    }
-});
-
-var Row = React.createClass({
-    render: function () {
-        return (
-            <div className="b-row"></div>
-        );
-    }
-});
-
 var Place = React.createClass({
     mixins: [Reflux.listenTo(gameStore, "onPlaceChange")],
     getInitialState: function () {
@@ -73,16 +57,23 @@ var Place = React.createClass({
 
                     var classNames = ['b-item'];
 
-                    if (cell == 'P') {
+                    if (cell.match(/^P/)) {
                         classNames.push('b-player');
                         style['background-color'] = getRandomColor();
+
+                        if (cell == 'PA') {
+                            classNames.push('b-player-active');
+                        }
                     }
 
                     if (cell == '0') classNames.push('b-block');
                     if (cell == '1') classNames.push('b-block-flame-proof');
 
                     return (
-                        <div key={ri * 100 + ci} className={classNames.join(' ')} style={style}></div>
+                        <div
+                            key={ri * 100 + ci}
+                            className={classNames.join(' ')}
+                            style={style}></div>
                     );
                 });
             });

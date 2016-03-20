@@ -40,6 +40,9 @@ div.b-item.b-player {
     box-sizing: border-box;
 }
 
+div.b-item.b-player.b-player-active {
+}
+
 div.b-item.bomb {
     background-color: orangered;
 }
