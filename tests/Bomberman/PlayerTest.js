@@ -46,7 +46,7 @@ describe('Player', function () {
             , player = placeAndPlayer.player;
 
         it('should ' + (option.shouldMove ? '' : 'not ') + 'move to ' + option.direction, function () {
-            expect(place.place[prev[1]][prev[0]]).to.be.an.instanceof(Player);
+            expect(place.players[prev[1]][prev[0]]).to.be.an.instanceof(Player);
 
             var
                 oldLocation = _.clone(player.location)
@@ -64,8 +64,8 @@ describe('Player', function () {
                 expect(locations.current.x).to.be.equal(next[0]);
                 expect(locations.current.y).to.be.equal(next[1]);
 
-                expect(place.place[prev[1]][prev[0]]).to.be.null;
-                expect(place.place[next[1]][next[0]]).to.be.instanceof(Player);
+                expect(place.players[prev[1]][prev[0]]).to.be.null;
+                expect(place.players[next[1]][next[0]]).to.be.instanceof(Player);
             } else {
                 expect(oldLocation.x).to.be.equal(locations.old.x);
                 expect(oldLocation.y).to.be.equal(locations.old.y);
@@ -73,26 +73,9 @@ describe('Player', function () {
                 expect(oldLocation.x).to.be.equal(locations.current.x);
                 expect(oldLocation.y).to.be.equal(locations.current.y);
             }
-
-
         });
     });
 });
-
-function makePlayersWithActiveAt(activeIndex) {
-    var playersResult = {all: undefined, active: undefined};
-
-    playersResult.all = [0, 1, 2, 3].map(function () {
-        return new Player();
-    });
-
-    if (activeIndex !== undefined) {
-        playersResult.all[activeIndex].active = true;
-        playersResult.active = playersResult.all[activeIndex];
-    }
-
-    return playersResult;
-}
 
 function getPlaceWithPlayerAt(x, y) {
     var
@@ -101,7 +84,7 @@ function getPlaceWithPlayerAt(x, y) {
         ;
 
     place.buildPlace(10);
-    place.place[y][x] = player;
+    place.players[y][x] = player;
     player.location = {x: x, y: y};
     player.place = place;
     player.active = true;
