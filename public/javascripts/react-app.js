@@ -21,38 +21,40 @@ var gameStore = Reflux.createStore({
         this.trigger(this.place);
     },
     onChange: function (placeInfo) {
+        console.log('On change handled');
         this.place = JSON.parse(placeInfo.game.place);
 
         this.trigger(this.place);
     },
     onWindowKeyDown: function (e) {
-        var actionName;
+        var keys = {
+            32: {
+                action: 'bomb.place',
+                args: {}
+            },
+            37: {
+                action: 'move',
+                args: {direction: 'left'}
+            },
+            38: {
+                action: 'move',
+                args: {direction: 'up'}
+            },
+            39: {
+                action: 'move',
+                args: {direction: 'right'}
+            },
+            40: {
+                action: 'move',
+                args: {direction: 'down'}
+            }
+        };
 
-        switch (e.keyCode) {
-            // 32 - space
-            case 32:
-                actionName = 'bomb.place';
-                break;
-            // 37 - left
-            case 37:
-                actionName = 'move.left';
-                break;
-            // 38 - up
-            case 38:
-                actionName = 'move.up';
-                break;
-            // 39 - right
-            case 39:
-                actionName = 'move.right';
-                break;
-            // 40 - down
-            case 40:
-                actionName = 'move.down';
-                break;
-            default:
+        var actionData = keys[e.keyCode];
+
+        if (actionData) {
+            this.socket.emit(actionData.action, actionData.args);
         }
-
-        this.socket.emit(actionName);
     },
     onPlaceBomb: function (bombInfo) {
         if (bombInfo.status == 'OK') {
@@ -170,7 +172,7 @@ var Place = React.createClass({
             items = (
                 <div>
                     <div className="b-info">
-                        BombCount: {this.state.playerBombCount}
+                        <h1>BombCount: {this.state.playerBombCount}</h1>
                     </div>
                     <div className="b-place">
                         {items.filter(function (item) {
