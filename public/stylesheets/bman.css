@@ -32,6 +32,13 @@ div.b-item.b-item-bomb {
     box-sizing: border-box;
 }
 
+div.b-item.b-item-flame {
+    background-color: orange;
+    border-radius: 50%;
+    border: 10px solid darkorange;
+    box-sizing: border-box;
+}
+
 div.b-item.b-item-player {
     border: 2px solid darkblue;
     border-radius: 50%;
