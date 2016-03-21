@@ -91,7 +91,8 @@ var Place = React.createClass({
             blocksFireProof: [],
             players: [],
             bombs: [],
-            flames: []
+            flames: [],
+            playerBombCount: 0
         }
     },
     onPlaceChange: function (place) {
@@ -102,6 +103,18 @@ var Place = React.createClass({
             bombs: place.bombs,
             flames: place.flames
         });
+
+        var playerBombCount = 0;
+
+        place.players.map(function (row) {
+            row.map(function (cell) {
+                if (cell && cell.isActive) {
+                    playerBombCount = cell.bombCount;
+                }
+            })
+        });
+
+        this.setState({playerBombCount: playerBombCount});
     },
     render: function () {
         var items = [];
@@ -155,10 +168,15 @@ var Place = React.createClass({
 
         if (items.length) {
             items = (
-                <div className="b-place">
-                    {items.filter(function (item) {
-                        return item !== null;
-                    })}
+                <div>
+                    <div className="b-info">
+                        BombCount: {this.state.playerBombCount}
+                    </div>
+                    <div className="b-place">
+                        {items.filter(function (item) {
+                            return item !== null;
+                        })}
+                    </div>
                 </div>
             );
         } else {
