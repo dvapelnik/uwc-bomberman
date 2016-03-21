@@ -1,4 +1,4 @@
-var GameActions = Reflux.createActions(['start', 'bombPlace', 'bombBoom', 'move']);
+var GameActions = Reflux.createActions(['start', 'change', 'bombPlace', 'bombBoom', 'move']);
 var WindowActions = Reflux.createActions(['keyDown']);
 
 var socket = io.connect(location.origin + '/game');
@@ -9,12 +9,18 @@ var gameStore = Reflux.createStore({
         this.place = [];
 
         this.listenTo(GameActions.start, this.onStart);
+        this.listenTo(GameActions.change, this.onChange);
         this.listenTo(GameActions.move, this.onMove);
         this.listenTo(GameActions.bombPlace, this.onPlaceBomb);
         this.listenTo(GameActions.bombBoom, this.onBombBoom);
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
     onStart: function (placeInfo) {
+        this.place = JSON.parse(placeInfo.game.place);
+
+        this.trigger(this.place);
+    },
+    onChange: function (placeInfo) {
         this.place = JSON.parse(placeInfo.game.place);
 
         this.trigger(this.place);
@@ -84,7 +90,8 @@ var Place = React.createClass({
             blocks: [],
             blocksFireProof: [],
             players: [],
-            bombs: []
+            bombs: [],
+            flames: []
         }
     },
     onPlaceChange: function (place) {
@@ -92,13 +99,14 @@ var Place = React.createClass({
             blocks: place.blocks,
             blocksFireProof: place.blocksFireProof,
             players: place.players,
-            bombs: place.bombs
+            bombs: place.bombs,
+            flames: place.flames
         });
     },
     render: function () {
         var items = [];
 
-        [this.state.blocks, this.state.blocksFireProof, this.state.players, this.state.bombs].map(function (layer, ti) {
+        [this.state.blocks, this.state.blocksFireProof, this.state.players, this.state.bombs, this.state.flames].map(function (layer, ti) {
             layer.map(function (row, ri) {
                 row
                     .map(function (cell, ci) {
@@ -131,6 +139,10 @@ var Place = React.createClass({
                             classNames.push('b-item-bomb');
                         }
 
+                        if (cell.type == 'flame') {
+                            classNames.push('b-item-flame');
+                        }
+
                         items.push(cell.type == 'empty' ? null : (
                             <div
                                 key={ti * 10000 + ri * 100 + ci}
@@ -158,6 +170,7 @@ var Place = React.createClass({
 });
 
 socket.on('start', GameActions.start);
+socket.on('change', GameActions.change);
 socket.on('bomb.place', GameActions.bombPlace);
 socket.on('bomb.boom', GameActions.bombBoom);
 socket.on('move', GameActions.move);
