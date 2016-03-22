@@ -1,0 +1,25 @@
+{
+  "game": {
+    "countOfPlayers": 4,
+    "place": {
+      "size": {
+        "width": 13,
+        "height": 11
+      },
+      "fillLevel": 10,
+      "flameLifetime": 1000
+    },
+    "bomb": {
+      "detonationTimeout": 3000,
+      "explosionRadius": 3
+    },
+    "player": {
+      "movementThrottling": 250,
+      "initialBombCount": 1,
+      "addNewBomb": {
+        "interval": 30000,
+        "delta": 1
+      }
+    }
+  }
+}
