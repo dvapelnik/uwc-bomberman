@@ -6,8 +6,8 @@
         "width": 13,
         "height": 11
       },
-      "fillLevel": 1,
-      "flameLifetime": 2000
+      "fillLevel": 10,
+      "flameLifetime": 1000
     },
     "bomb": {
       "detonationTimeout": 3000,
