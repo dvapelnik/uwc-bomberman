@@ -37,38 +37,35 @@ div.b-item {
     box-sizing: border-box;
 }
 
-div.b-item-block {
-    background-image: url('../images/block.png');
+div.b-item {
     background-size: 100%;
 }
 
-div.b-item-block.b-item-block-fire-proof {
+div.b-item.b-item-block {
+    background-image: url('../images/block.png');
+}
+
+div.b-item.b-item-block.b-item-block-fire-proof {
     background-image: url('../images/block-fire-proof.png');
-    background-size: 100%;
+
 }
 
 div.b-item.b-item-bomb {
     background-image: url('../images/bomb.png');
-    background-size: 100%;
-    border-radius: 50%;
     box-sizing: border-box;
 }
 
 div.b-item.b-item-flame {
-    border-radius: 50%;
     box-sizing: border-box;
     background-image: url('../images/flame.png');
-    background-size: 100%;
 }
 
 div.b-item.b-item-player {
     background-image: url('../images/player.png');
-    background-size: 100%;
-    border-radius: 50%;
     box-sizing: border-box;
+    transition: all .25s;
 }
 
 div.b-item.b-item-player.b-item-player-current {
     background-image: url('../images/player-active.png');
-    background-size: 100%;
 }

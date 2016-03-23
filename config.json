@@ -13,7 +13,7 @@
         "actual": 1
       },
       "fillLevel": 10,
-      "flameLifetime": 1000
+      "flameLifetime": 500
     },
     "bomb": {
       "detonationTimeout": 3000,
