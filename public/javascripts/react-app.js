@@ -1,4 +1,4 @@
-var GameActions = Reflux.createActions(['start', 'change', 'bombPlace', 'bombBoom', 'move']);
+var GameActions = Reflux.createActions(['start', 'end', 'makeNew', 'change', 'bombPlace', 'bombBoom', 'move']);
 var WindowActions = Reflux.createActions(['keyDown']);
 
 var socket = io.connect(location.origin + '/game');
@@ -7,8 +7,11 @@ var gameStore = Reflux.createStore({
     init: function () {
         this.socket = socket;
         this.place = [];
+        this.isNewGame = false;
 
         this.listenTo(GameActions.start, this.onStart);
+        this.listenTo(GameActions.end, this.onEnd);
+        this.listenTo(GameActions.makeNew, this.onMakeNew);
         this.listenTo(GameActions.change, this.onChange);
         this.listenTo(GameActions.move, this.onMove);
         this.listenTo(GameActions.bombPlace, this.onPlaceBomb);
@@ -16,9 +19,37 @@ var gameStore = Reflux.createStore({
         this.listenTo(WindowActions.keyDown, this.onWindowKeyDown);
     },
     onStart: function (placeInfo) {
+        this.isNewGame = true;
+
         this.place = JSON.parse(placeInfo.game.place);
 
         this.trigger(this.place);
+    },
+    onEnd: function (endInfo) {
+        if (!this.isNewGame) {
+            return;
+        }
+
+        var
+            message, playAgain
+            , messageSuffix = 'Would you want play again?'
+            ;
+
+        if (endInfo.isCurrentPlayer) {
+            message = 'You won!';
+        } else {
+            message = ['Player', endInfo.winnerName, 'won!'].join(' ');
+        }
+
+        this.isNewGame = false;
+        playAgain = confirm([message, messageSuffix].join(' '));
+
+        if (playAgain) {
+            this.socket.emit('new');
+        }
+    },
+    onMakeNew: function () {
+        this.socket.emit('new');
     },
     onChange: function (placeInfo) {
         console.log('On change handled');
@@ -133,6 +164,11 @@ var Place = React.createClass({
             })
         });
     },
+    onNewGameHandler: function () {
+        if (confirm('Start new game?')) {
+            GameActions.makeNew();
+        }
+    },
     render: function () {
         var items = [];
 
@@ -193,6 +229,7 @@ var Place = React.createClass({
                     </div>
                     <div className="b-info">
                         <h1>BombCount: {this.state.playerBombCount}</h1>
+                        <div className="b-new-game-action" onClick={this.onNewGameHandler}>New game</div>
                         <ol className="b-player-list">
                             {this.state.clients.map(function (client, i) {
                                 return <li key={i}>{client.name}</li>;
@@ -214,6 +251,7 @@ socket.on('change', GameActions.change);
 socket.on('bomb.place', GameActions.bombPlace);
 socket.on('bomb.boom', GameActions.bombBoom);
 socket.on('move', GameActions.move);
+socket.on('end', GameActions.end);
 document.addEventListener('keydown', WindowActions.keyDown);
 
 ReactDOM.render(
