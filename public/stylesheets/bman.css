@@ -2,6 +2,16 @@ div.b-info {
 
 }
 
+div.b-info div.b-new-game-action {
+    display: inline-block;
+    border: 2px solid black;
+    padding: 7px;
+    border-radius: 7px;
+    background-color: bisque;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 div.b-info ol.b-player-list > li {
     font-size: 20px;
 }

@@ -1,6 +1,7 @@
 {
   "game": {
     "countOfPlayers": 4,
+    "realPlayers": 1,
     "place": {
       "size": {
         "width": 13,
