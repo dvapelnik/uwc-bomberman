@@ -1,6 +1,6 @@
 {
   "game": {
-    "countOfPlayers": 2,
+    "countOfPlayers": 4,
     "realPlayers": 1,
     "place": {
       "size": {
