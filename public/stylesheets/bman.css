@@ -63,6 +63,8 @@ div.b-item.b-item-flame {
 div.b-item.b-item-player {
     background-image: url('../images/player.png');
     box-sizing: border-box;
+    -webkit-transition: all .25s;
+    -o-transition: all .25s;
     transition: all .25s;
 }
 
