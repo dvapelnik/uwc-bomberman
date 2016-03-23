@@ -1,7 +1,17 @@
-var GameActions = Reflux.createActions(['start', 'end', 'makeNew', 'change', 'bombPlace', 'bombBoom', 'move']);
-var WindowActions = Reflux.createActions(['keyDown']);
+var
+    socket = io.connect(location.origin + '/game')
+    , GameActions = Reflux.createActions(['start', 'end', 'makeNew', 'change', 'bombPlace', 'bombBoom', 'move'])
+    , WindowActions = Reflux.createActions(['keyDown'])
+    ;
 
-var socket = io.connect(location.origin + '/game');
+socket.on('start', GameActions.start);
+socket.on('change', GameActions.change);
+socket.on('bomb.place', GameActions.bombPlace);
+socket.on('bomb.boom', GameActions.bombBoom);
+socket.on('move', GameActions.move);
+socket.on('end', GameActions.end);
+document.addEventListener('keydown', WindowActions.keyDown);
+
 
 var gameStore = Reflux.createStore({
     init: function () {
@@ -26,6 +36,8 @@ var gameStore = Reflux.createStore({
         this.trigger(this.place);
     },
     onEnd: function (endInfo) {
+        console.log(endInfo);
+
         if (!this.isNewGame) {
             return;
         }
@@ -245,14 +257,6 @@ var Place = React.createClass({
         return items;
     }
 });
-
-socket.on('start', GameActions.start);
-socket.on('change', GameActions.change);
-socket.on('bomb.place', GameActions.bombPlace);
-socket.on('bomb.boom', GameActions.bombBoom);
-socket.on('move', GameActions.move);
-socket.on('end', GameActions.end);
-document.addEventListener('keydown', WindowActions.keyDown);
 
 ReactDOM.render(
     <Place/>,

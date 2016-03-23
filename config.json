@@ -13,16 +13,16 @@
         "actual": 1
       },
       "fillLevel": 10,
-      "flameLifetime": 500
+      "flameLifetime": 250
     },
     "bomb": {
       "detonationTimeout": 3000,
       "explosionRadius": 3,
-      "chainExplosion": true
+      "chainExplosion": false
     },
     "player": {
       "movementThrottling": 250,
-      "initialBombCount": 1,
+      "initialBombCount": 10,
       "addNewBomb": {
         "interval": 30000,
         "delta": 1
