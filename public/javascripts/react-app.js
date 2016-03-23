@@ -89,6 +89,7 @@ var Place = React.createClass({
     mixins: [Reflux.listenTo(gameStore, "onPlaceChange")],
     getInitialState: function () {
         return {
+            clients: [],
             blocks: [],
             blocksFireProof: [],
             players: [],
@@ -106,17 +107,31 @@ var Place = React.createClass({
             flames: place.flames
         });
 
-        var playerBombCount = 0;
+        var
+            playerBombCount = 0
+            , clients = []
+            ;
 
         place.players.map(function (row) {
             row.map(function (cell) {
-                if (cell && cell.isActive) {
-                    playerBombCount = cell.bombCount;
+                if (cell) {
+                    if (cell.name) {
+                        clients.push({name: cell.name});
+                    }
+
+                    if (cell.isActive) {
+                        playerBombCount = cell.bombCount;
+                    }
                 }
             })
         });
 
-        this.setState({playerBombCount: playerBombCount});
+        this.setState({
+            playerBombCount: playerBombCount,
+            clients: clients.sort(function (a, b) {
+                return a.name > b.name;
+            })
+        });
     },
     render: function () {
         var items = [];
@@ -171,13 +186,18 @@ var Place = React.createClass({
         if (items.length) {
             items = (
                 <div>
-                    <div className="b-info">
-                        <h1>BombCount: {this.state.playerBombCount}</h1>
-                    </div>
                     <div className="b-place">
                         {items.filter(function (item) {
                             return item !== null;
                         })}
+                    </div>
+                    <div className="b-info">
+                        <h1>BombCount: {this.state.playerBombCount}</h1>
+                        <ol className="b-player-list">
+                            {this.state.clients.map(function (client, i) {
+                                return <li key={i}>{client.name}</li>;
+                            })}
+                        </ol>
                     </div>
                 </div>
             );

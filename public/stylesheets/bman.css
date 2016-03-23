@@ -1,8 +1,18 @@
+div.b-info {
+
+}
+
+div.b-info ol.b-player-list > li {
+    font-size: 20px;
+}
+
 div.b-place {
     position: relative;
     border: 4px solid #ddffdd;
     height: 550px;
     width: 650px;
+    float: left;
+    margin-right: 50px;
 }
 
 div.b-item {
