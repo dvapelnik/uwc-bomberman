@@ -1,6 +1,7 @@
 {
   "game": {
     "countOfPlayers": 4,
+    "realPlayers": 1,
     "place": {
       "size": {
         "width": 13,
@@ -16,7 +17,8 @@
     },
     "bomb": {
       "detonationTimeout": 3000,
-      "explosionRadius": 3
+      "explosionRadius": 3,
+      "chainExplosion": true
     },
     "player": {
       "movementThrottling": 250,
