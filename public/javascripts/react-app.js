@@ -172,7 +172,7 @@ var Place = React.createClass({
     render: function () {
         var items = [];
 
-        [this.state.blocks, this.state.blocksFireProof, this.state.players, this.state.flames, this.state.bombs].map(function (layer, ti) {
+        [this.state.blocks, this.state.blocksFireProof, this.state.flames, this.state.bombs, this.state.players].map(function (layer, ti) {
             layer.map(function (row, ri) {
                 row
                     .map(function (cell, ci) {
@@ -194,7 +194,7 @@ var Place = React.createClass({
                         if (cell.type == 'player') {
                             classNames.push('b-item-player');
 
-                            style.backgroundColor = cell.color;
+                            //style.backgroundColor = cell.color;
 
                             if (cell.isActive) {
                                 classNames.push('b-item-player-current');
