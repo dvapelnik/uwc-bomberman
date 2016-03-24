@@ -23,6 +23,7 @@
     "socket.io": "^1.4.5",
     "underscore": "^1.8.3",
     "util": "~0.10.3",
-    "better-console": "~0.2.4"
+    "better-console": "~0.2.4",
+    "javascript-astar": "~0.4.1"
   }
 }
