@@ -49,6 +49,8 @@ var gameStore = Reflux.createStore({
 
         if (endInfo.isCurrentPlayer) {
             message = 'You won!';
+        } else if (endInfo.isDeadHeat) {
+            message = 'Dead heat!';
         } else {
             message = ['Player', endInfo.winnerName, 'won!'].join(' ');
         }
