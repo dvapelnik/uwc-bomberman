@@ -56,7 +56,8 @@ var gameStore = Reflux.createStore({
         }
 
         this.isNewGame = false;
-        playAgain = confirm([message, messageSuffix].join(' '));
+        playAgain = true;
+        //playAgain = confirm([message, messageSuffix].join(' '));
 
         if (playAgain) {
             this.socket.emit('new');
