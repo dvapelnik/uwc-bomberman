@@ -10,18 +10,18 @@
       "filling": {
         "min": 0,
         "max": 10,
-        "actual": 1
+        "actual": 10
       },
       "fillLevel": 10,
       "flameLifetime": 250
     },
     "bomb": {
-      "detonationTimeout": 3000,
+      "detonationTimeout": 10000,
       "explosionRadius": 3,
       "chainExplosion": false
     },
     "player": {
-      "movementThrottling": 250,
+      "movementThrottling": 1000,
       "initialBombCount": 10,
       "addNewBomb": {
         "interval": 30000,
