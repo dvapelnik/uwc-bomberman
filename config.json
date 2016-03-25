@@ -10,7 +10,7 @@
       "filling": {
         "min": 0,
         "max": 10,
-        "actual": 3
+        "actual": 5
       },
       "fillLevel": 10,
       "flameLifetime": 250
@@ -24,7 +24,7 @@
       "movementThrottling": 250,
       "initialBombCount": 1,
       "addNewBomb": {
-        "interval": 30000,
+        "interval": 15000,
         "delta": 1
       }
     }
