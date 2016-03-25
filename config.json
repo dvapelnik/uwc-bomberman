@@ -10,7 +10,7 @@
       "filling": {
         "min": 0,
         "max": 10,
-        "actual": 3
+        "actual": 5
       },
       "fillLevel": 10,
       "flameLifetime": 250
