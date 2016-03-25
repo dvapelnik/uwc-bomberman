@@ -1,6 +1,6 @@
 {
   "game": {
-    "countOfPlayers": 2,
+    "countOfPlayers": 4,
     "realPlayers": 1,
     "place": {
       "size": {
@@ -10,19 +10,19 @@
       "filling": {
         "min": 0,
         "max": 10,
-        "actual": 10
+        "actual": 7
       },
       "fillLevel": 10,
       "flameLifetime": 250
     },
     "bomb": {
-      "detonationTimeout": 10000,
+      "detonationTimeout": 3000,
       "explosionRadius": 3,
       "chainExplosion": false
     },
     "player": {
-      "movementThrottling": 1000,
-      "initialBombCount": 10,
+      "movementThrottling": 250,
+      "initialBombCount": 1,
       "addNewBomb": {
         "interval": 30000,
         "delta": 1
