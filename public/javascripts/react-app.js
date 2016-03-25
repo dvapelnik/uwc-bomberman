@@ -49,12 +49,15 @@ var gameStore = Reflux.createStore({
 
         if (endInfo.isCurrentPlayer) {
             message = 'You won!';
+        } else if (endInfo.isDeadHeat) {
+            message = 'Dead heat!';
         } else {
             message = ['Player', endInfo.winnerName, 'won!'].join(' ');
         }
 
         this.isNewGame = false;
-        playAgain = confirm([message, messageSuffix].join(' '));
+        playAgain = true;
+        //playAgain = confirm([message, messageSuffix].join(' '));
 
         if (playAgain) {
             this.socket.emit('new');
