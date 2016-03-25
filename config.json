@@ -24,7 +24,7 @@
       "movementThrottling": 250,
       "initialBombCount": 1,
       "addNewBomb": {
-        "interval": 15000,
+        "interval": 30000,
         "delta": 1
       }
     }
