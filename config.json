@@ -28,5 +28,20 @@
         "delta": 1
       }
     }
+  },
+  "ai": {
+    "movementLag": 100,
+    "bombPlacementChance": {
+      "underEnemy": {
+        "min": 0,
+        "max": 10,
+        "actual": 7
+      },
+      "underBomb": {
+        "min": 0,
+        "max": 10,
+        "actual": 7
+      }
+    }
   }
 }
