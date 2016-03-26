@@ -12,7 +12,6 @@
         "max": 10,
         "actual": 5
       },
-      "fillLevel": 10,
       "flameLifetime": 250
     },
     "bomb": {
