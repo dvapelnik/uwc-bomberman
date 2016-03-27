@@ -1,6 +1,7 @@
 var
     chai = require('chai')
     , spies = require('chai-spies')
+    , sinon = require('sinon')
     ;
 
 chai.use(spies);
@@ -8,6 +9,7 @@ chai.use(spies);
 var
     expect = chai.expect
     , assert = chai.assert
+    , clock
     ;
 
 var Bomb = require('../../lib/Bomberman/Bomb');
@@ -107,5 +109,20 @@ describe('Bomb', function () {
          *
          * @todo make test
          **/
+    });
+
+    it('should make explosion after 3000 ms after instancing', function () {
+        clock = sinon.useFakeTimers();
+
+        var bomb = new Bomb();
+        bomb.bang = chai.spy(new Function());
+
+        clock.tick(2999);
+        expect(bomb.bang).to.have.not.called();
+
+        clock.tick(1);
+        expect(bomb.bang).to.have.been.once.called();
+
+        clock.restore();
     });
 });
