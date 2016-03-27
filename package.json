@@ -18,7 +18,6 @@
     "javascript-astar": "~0.4.1",
     "morgan": "~1.6.1",
     "nconf": "~0.8.4",
-    "proxyquire": "^1.7.4",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.4.5",
     "underscore": "^1.8.3",
@@ -27,6 +26,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "proxyquire": "^1.7.4"
   }
 }
