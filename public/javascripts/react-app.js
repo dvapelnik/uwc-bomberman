@@ -244,6 +244,10 @@ var Place = React.createClass({
                     </div>
                     <div className="b-info">
                         <h1>BombCount: {this.state.playerBombCount}</h1>
+                        <div className="controls">
+                            Arrow-keys on keyboard ([Up], [Down], [Left], [Right]) - for moving
+                            [Space] - for bomb placing
+                        </div>
                         <div className="b-new-game-action" onClick={this.onNewGameHandler}>New game</div>
                         <ol className="b-player-list">
                             {this.state.clients.map(function (client, i) {
